@@ -34,6 +34,14 @@ class User
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user')]
+    private $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,6 +117,14 @@ class User
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
     }
 
 }
