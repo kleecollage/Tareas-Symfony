@@ -21,7 +21,7 @@ class TaskController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/', name: 'tasks')]
+    #[Route('/inicio', name: 'tasks')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         /* ==================== prueba de entidades y relaciones ====================
@@ -48,7 +48,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/task/{id}', name: 'task_detail')]
+    #[Route('/tarea/{id}', name: 'task_detail')]
     public function detail(Task $task)
     {
         if (!$task){
