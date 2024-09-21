@@ -40,12 +40,8 @@ class TaskController extends AbstractController
         }
         ================================================================================
         */
-
         $task_repo = $this->entityManager->getRepository(Task::class);
         $tasks = $task_repo->findBy([], ['id' => 'DESC']);
-
-        $user_repo = $this->entityManager->getRepository(User::class);
-        $users = $user_repo->findAll();
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
@@ -119,8 +115,14 @@ class TaskController extends AbstractController
     }
 
     #[Route('eliminar/{id}', name: 'delete')]
-    public function delete(Task $task, Request $request)
+    public function delete(Task $task, Request $request, UserInterface $user)
     {
+        if (!$user || !$task || $user->getId() != $task->getUserId()->getId()) {
+            return $this->redirectToRoute('tasks');
+        }
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
 
+        return $this->redirectToRoute('tasks');
     }
 }

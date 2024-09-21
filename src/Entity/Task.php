@@ -37,12 +37,12 @@ class Task
     {
         return $this->id;
     }
-
+    // Este getter deberia llamarse unicamente getUser, ya que devuelven un objeto
     public function getUserId(): ?User
     {
         return $this->user;
     }
-
+    // Este setter deberia llamarse unicamente setUser, ya que devuelven un objeto
     public function setUserId(?User $user): static
     {
         $this->user = $user;
