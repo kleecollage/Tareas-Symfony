@@ -6,10 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert; // validaciones
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,18 +20,26 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Regex(pattern: '/[a-zA-Z ]+/')]
     private ?string $role = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank()]
+    #[Assert\Regex(pattern: '/[a-zA-Z ]+/')]
     private ?string $name = null;
 
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank()]
+    #[Assert\Regex(pattern: '/[a-zA-Z ]+/')]
     private ?string $surname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Email(message: "El email '{{ value }} no es valido'")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
     private ?string $password = null;
 
     #[ORM\Column]
@@ -127,4 +138,18 @@ class User
         return $this->tasks;
     }
 
+    public function getRoles(): array
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials(): void
+    {
+        // THIS IS EMPTY
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
 }

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Detalle{% endblock %}
+{% block body %}
+    <div>
+        <h2>{{ task.title }}</h2>
+        <p class="data-task">
+            {{ task.userId.name }} {{ task.userId.surname}} - {{ task.createdAt|date('d/m/Y H:i')}} |
+            {% if task.priority == 'High' %} {{ 'Alta'}} {% endif %}
+            {% if task.priority == 'Medium' %} {{ 'Media'}} {% endif %}
+            {% if task.priority == 'Low' %} {{ 'Baja'}} {% endif %}
+            | {{ task.hours }} hrs
+        </p>
+        <p>{{ task.content }}</p>
+    </div>
+{% endblock %}
+
+

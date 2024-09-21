@@ -5,6 +5,8 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            {# the imports at assets/app.js must be change for it to work  #}
+            <link rel="stylesheet" href="{{ asset('styles/style.css') }}" type="text/css">
         {% endblock %}
 
         {% block javascripts %}
@@ -12,6 +14,24 @@
         {% endblock %}
     </head>
     <body>
+        {% block header %}
+            <div id="header">
+                <h2>Tareas Symfony</h2>
+                <ul id="menu">
+                    {% if app.user %}
+                        <li><a href="{{ path('tasks') }}">Inicio</a></li>
+                        <li><a href="{{ path('my_tasks') }}">Mis Tareas</a></li>
+                        <li><a href="{{ path('task_creation') }}">Crear Tarea</a></li>
+                        <li class="right"><a href="{{ path('_logout_main') }}">Cerrar Sesion</a></li>
+                        <li class="right"><a href="">{{ app.user.name ~ ' ' ~ app.user.surname }}</a></li>
+                    {% else %}
+                        <li><a href="{{ path('login') }}">Login</a></li>
+                        <li><a href="{{ path('register') }}">Registro</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        {% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>
