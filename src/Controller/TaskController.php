@@ -81,6 +81,7 @@ class TaskController extends AbstractController
         }
 
         return $this->render('task/creation.html.twig', [
+            'edit' => false,
             'form' => $form->createView(),
         ]);
     }
@@ -93,5 +94,33 @@ class TaskController extends AbstractController
         return $this->render('task/my_tasks.html.twig', [
             'tasks' => $tasks,
         ]);
+    }
+
+    #[Route('/editar-tarea/{id}', name: 'edit')]
+    public function edit(Task $task, Request $request, UserInterface $user)
+    {
+        if (!$user || $user->getId() != $task->getUserId()->getId()) {
+            return $this->redirectToRoute('tasks');
+        }
+
+        $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($task);
+            $this->entityManager->flush();
+
+            return $this->redirect($this->generateUrl('task_detail', ['id' => $task->getId()]));
+        }
+
+        return $this->render('task/creation.html.twig', [
+            'edit' => true,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('eliminar/{id}', name: 'delete')]
+    public function delete(Task $task, Request $request)
+    {
+
     }
 }

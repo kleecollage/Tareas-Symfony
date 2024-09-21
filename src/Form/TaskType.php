@@ -29,7 +29,7 @@ class TaskType extends AbstractType{
             'label' => 'Horas Presupuestadas',
         ));
         $builder->add('submit', SubmitType::class, array(
-            'label' => 'Crear',
+            'label' => 'Guardar',
         ));
     }
 }
